@@ -20,6 +20,8 @@ public class DaoH2Paciente implements IDao<Paciente> {
     public static final String INSERT = "INSERT INTO PACIENTES VALUES(DEFAULT,?,?,?,?,? )";
     public static final String SELECT_ID = "SELECT * FROM PACIENTES WHERE ID = ?";
     public static final String SELECT_ALL = "SELECT * FROM PACIENTES";
+    public static final String UPDATE = "UPDATE PACIENTES SET APELLIDO=?, NOMBRE=?,DNI=?, FECHA_INGRESO=?, ID_DOMICILIO=? WHERE ID=?";
+    public static final String DELETE = "DELETE FROM PACIENTES WHERE ID=?";
 
     // esta instanciacion de la clase daoH2Domicilio me va a permitir acceder a los metodos de domicilio
     private DaoH2Domicilio daoH2Domicilio = new DaoH2Domicilio();
@@ -147,5 +149,93 @@ public class DaoH2Paciente implements IDao<Paciente> {
             }
         }
         return pacientes;
+    }
+
+    @Override
+    public void modifitar(Paciente paciente) {
+        Connection connection = null;
+        Paciente pacienteARetornar = null;
+        //Domicilio domicilioAuxiliar = daoH2Domicilio.guardar(paciente.getDomicilio());
+        try{
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement.setString(1, paciente.getApellido());
+            preparedStatement.setString(2, paciente.getNombre());
+            preparedStatement.setString(3, paciente.getDni());
+            preparedStatement.setDate(4, Date.valueOf(paciente.getFechaIngreso()));
+            preparedStatement.setInt(5, paciente.getDomicilio().getId());
+            preparedStatement.setInt(6, paciente.getId());
+            daoH2Domicilio.modifitar(paciente.getDomicilio());
+            preparedStatement.executeUpdate();
+            connection.commit();
+            logger.info("paciente modificado "+ paciente);
+
+        }catch (Exception e){
+            if(connection != null){
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    logger.error(e.getMessage());
+                } finally {
+                    try {
+                        connection.setAutoCommit(true);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void eliminar(Integer id) {
+        Connection connection = null;
+        Paciente paciente = null;
+        try{
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+            //Buscamos al paciente para obtener su domicilio y eliminarlo.
+            paciente = buscarPorId(id);
+            daoH2Domicilio.eliminar(paciente.getDomicilio().getId());
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            connection.commit();
+            logger.info("paciente eliminado "+ id);
+
+        }catch (Exception e){
+            if(connection != null){
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    logger.error(e.getMessage());
+                } finally {
+                    try {
+                        connection.setAutoCommit(true);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 }
