@@ -207,7 +207,7 @@ public class DaoH2Paciente implements IDao<Paciente> {
             //Buscamos al paciente para obtener su domicilio y eliminarlo.
             paciente = buscarPorId(id);
             daoH2Domicilio.eliminar(paciente.getDomicilio().getId());
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
             connection.commit();
