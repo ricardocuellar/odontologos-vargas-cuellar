@@ -1,60 +1,34 @@
-package dh.backend.clinica.model;
+package dh.backend.clinica.entity;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "turnos")
 public class Turno {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne
+    @JsonBackReference(value="paciente-turnos")
     private Paciente paciente;
+
+    @ManyToOne
+    @JsonBackReference(value = "odontologo-turnos")
     private Odontologo odontologo;
     private LocalDate fecha;
-
-    public Turno() {
-    }
-
-    public Turno(Paciente paciente, Odontologo odontologo, LocalDate fecha) {
-        this.paciente = paciente;
-        this.odontologo = odontologo;
-        this.fecha = fecha;
-    }
-
-    public Turno(Integer id, Paciente paciente, Odontologo odontologo, LocalDate fecha) {
-        this.id = id;
-        this.paciente = paciente;
-        this.odontologo = odontologo;
-        this.fecha = fecha;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    public Odontologo getOdontologo() {
-        return odontologo;
-    }
-
-    public void setOdontologo(Odontologo odontologo) {
-        this.odontologo = odontologo;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
 
     @Override
     public String toString() {
@@ -65,4 +39,6 @@ public class Turno {
                 ", fecha=" + fecha +
                 '}';
     }
+
+
 }

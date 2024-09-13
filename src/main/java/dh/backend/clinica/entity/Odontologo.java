@@ -1,58 +1,33 @@
-package dh.backend.clinica.model;
+package dh.backend.clinica.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.Set;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name="odontologos")
 public class Odontologo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String numeroMatricula;
     private String nombre;
     private String apellido;
 
-    public Odontologo() {
-    }
-
-    public Odontologo(String numeroMatricula, String nombre, String apellido) {
-        this.numeroMatricula = numeroMatricula;
-        this.nombre = nombre;
-        this.apellido = apellido;
-    }
-
-    public Odontologo(Integer id, String numeroMatricula, String nombre, String apellido) {
-        this.id = id;
-        this.numeroMatricula = numeroMatricula;
-        this.nombre = nombre;
-        this.apellido = apellido;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNumeroMatricula() {
-        return numeroMatricula;
-    }
-
-    public void setNumeroMatricula(String numeroMatricula) {
-        this.numeroMatricula = numeroMatricula;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
+    @OneToMany(mappedBy = "odontologo", cascade = CascadeType.REMOVE)
+    @JsonManagedReference(value = "odontologo-turnos")
+    //@JsonIgnore
+    private Set<Turno> turnoSet;
 
     @Override
     public String toString() {
