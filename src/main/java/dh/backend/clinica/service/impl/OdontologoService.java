@@ -60,4 +60,18 @@ public class OdontologoService implements IOdontologoService {
         logger.info("odontólogo encontrado: " + id);
         return odontologoRepository.findById(id);
     }
+
+    @Override
+    public List<Odontologo> buscarPorUnaParteApellido(String parte){
+        List<Odontologo> apellidoOdontologo = odontologoRepository.buscarPorParteApellido(parte);
+        logger.info("búsqueda por apellido odontologos: "+ apellidoOdontologo);
+        return apellidoOdontologo;
+    }
+
+    @Override
+    public List<Odontologo> buscarPorUnaParteMatricula(String matricula) {
+        List<Odontologo> matriculaOdontologo = odontologoRepository.buscarPorParteMatricula(matricula);
+        logger.info("búsqueda por matricula odontologos: "+ matriculaOdontologo);
+        return matriculaOdontologo;
+    }
 }

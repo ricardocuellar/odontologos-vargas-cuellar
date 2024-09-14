@@ -69,5 +69,15 @@ public class OdontologoController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/buscarApellido/{apellido}")
+    public ResponseEntity<List<Odontologo>> buscarParteApellido(@PathVariable String apellido){
+        return ResponseEntity.ok(odontologoService.buscarPorUnaParteApellido(apellido));
+    }
+
+    @GetMapping("/buscarMatricula/{matricula}")
+    public ResponseEntity<List<Odontologo>> buscarParteMatricula(@PathVariable String matricula){
+        return ResponseEntity.ok(odontologoService.buscarPorUnaParteMatricula(matricula));
+    }
+
 
 }

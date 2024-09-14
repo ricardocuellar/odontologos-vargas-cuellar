@@ -12,4 +12,7 @@ public interface IOdontologoService {
     List<Odontologo> buscarTodos();
     void modificarOdontologo(Odontologo odontologo);
     void  eliminarOdontologo(Integer id);
+    List<Odontologo> buscarPorUnaParteApellido(String parte);
+    List<Odontologo> buscarPorUnaParteMatricula(String matricula);
+
 }
