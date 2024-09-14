@@ -7,6 +7,7 @@ import dh.backend.clinica.repository.IOdontologoRepository;
 import dh.backend.clinica.service.IOdontologoService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,11 @@ public class OdontologoService implements IOdontologoService {
             throw new ResourceNotFoundException("Paciente no encontrado");
         }
         odontologoRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Odontologo> buscarTodos() {
+        return odontologoRepository.findAll();
     }
 
     @Override

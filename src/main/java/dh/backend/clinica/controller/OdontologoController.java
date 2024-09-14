@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,7 +40,7 @@ public class OdontologoController {
         Optional<Odontologo> odontologoEncontrado = odontologoService.buscarPorId(odontologo.getId());
         if (odontologoEncontrado.isPresent()){
             odontologoService.modificarOdontologo(odontologo);
-            String jsonResponse = "{\"mensaje\": \"El Odontologo fue modificado\"";
+            String jsonResponse = "{\"mensaje\": \"El Odontologo fue modificado\"}";
             return  ResponseEntity.ok(jsonResponse);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -49,10 +50,15 @@ public class OdontologoController {
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<String> eliminarOdontologo(@PathVariable Integer id){
         odontologoService.eliminarOdontologo(id);
-        return  ResponseEntity.ok("{\"mensaje\": \"El odontologo fue eliminado\"");
+        return  ResponseEntity.ok("{\"mensaje\": \"El odontologo fue eliminado\"}");
 
     }
 
+
+    @GetMapping("/buscartodos")
+    public ResponseEntity<List<Odontologo>> buscarTodos(){
+        return ResponseEntity.ok(odontologoService.buscarTodos());
+    }
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<Odontologo> buscarPorId(@PathVariable Integer id){
