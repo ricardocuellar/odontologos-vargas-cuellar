@@ -42,19 +42,22 @@ public class OdontologoService implements IOdontologoService {
             logger.info("id del odontólogo eliminado: " + id);
             odontologoRepository.deleteById(id);
         }else{
-            throw new ResourceNotFoundException("Paciente no encontrado");
+            logger.error("Odontologo " + id + " no encontrado");
+            throw new ResourceNotFoundException("Odontólogo no encontrado");
         }
         odontologoRepository.deleteById(id);
     }
 
     @Override
     public List<Odontologo> buscarTodos() {
-        return odontologoRepository.findAll();
+        List<Odontologo> listaOdontologos = odontologoRepository.findAll();
+        logger.info("lista odontólogos: "+ listaOdontologos);
+        return listaOdontologos;
     }
 
     @Override
     public Optional<Odontologo> buscarPorId(Integer id) {
-        logger.info("id del odontólogo encontrado: " + id);
+        logger.info("odontólogo encontrado: " + id);
         return odontologoRepository.findById(id);
     }
 }
