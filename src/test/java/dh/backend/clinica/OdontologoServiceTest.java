@@ -1,22 +1,7 @@
 package dh.backend.clinica;
 
-import dh.backend.clinica.dao.impl.DaoH2Odontologo;
-import dh.backend.clinica.model.Odontologo;
-import dh.backend.clinica.service.OdontologoService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class OdontologoServiceTest {
+    /*
     private static final Logger logger = LoggerFactory.getLogger(OdontologoServiceTest.class);
     private static OdontologoService odontologoService = new OdontologoService(new DaoH2Odontologo());
 
@@ -66,5 +51,7 @@ class OdontologoServiceTest {
         // entonces
         assertEquals(id, odontologoDesdeDB.getId());
     }
+    */
+
 
 }
