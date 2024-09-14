@@ -105,7 +105,7 @@ public class TurnoService implements ITurnoService {
             turnoRepository.save(turno);
         }else{
             logger.error("El turno no se pudo modificar");
-
+            throw new ResourceNotFoundException("El turno no se pudo modificar");
         }
     }
 
