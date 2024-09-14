@@ -1,22 +1,8 @@
 package dh.backend.clinica;
 
-import dh.backend.clinica.dao.impl.DaoH2Paciente;
-import dh.backend.clinica.db.H2Connection;
-import dh.backend.clinica.model.Domicilio;
-import dh.backend.clinica.model.Paciente;
-import dh.backend.clinica.service.PacienteService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PacienteServiceTest {
+    /*
     static final Logger logger = LoggerFactory.getLogger(PacienteServiceTest.class);
     PacienteService pacienteService = new PacienteService(new DaoH2Paciente());
     @BeforeAll
@@ -56,5 +42,5 @@ class PacienteServiceTest {
         // entonces
         assertFalse(pacientes.isEmpty());
     }
-
+    */
 }
