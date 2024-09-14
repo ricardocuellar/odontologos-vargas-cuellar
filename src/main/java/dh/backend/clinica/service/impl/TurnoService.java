@@ -14,6 +14,8 @@ import dh.backend.clinica.service.IOdontologoService;
 import dh.backend.clinica.service.IPacienteService;
 import dh.backend.clinica.service.ITurnoService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ import java.util.Optional;
 
 @Service
 public class TurnoService implements ITurnoService {
+    public static final Logger logger = LoggerFactory.getLogger(TurnoService.class);
     private ITurnoRepository turnoRepository;
     private IPacienteService pacienteService;
     private IOdontologoService odontologoService;
@@ -49,6 +52,7 @@ public class TurnoService implements ITurnoService {
             turno.setOdontologo(odontologo.get());
             turno.setFecha(LocalDate.parse(turnoRequestDto.getFecha()));
             //Get persist turno
+            logger.info("turno guardado: "+ turno.getId());
             turnoDesdeBD = turnoRepository.save(turno);
 
             //Build of turno response dto from turno got of DB
@@ -57,13 +61,16 @@ public class TurnoService implements ITurnoService {
             //Armado con Model mapper
             turnoResponseDto = convertirTUrnoEnResponse(turnoDesdeBD);
         }
+        logger.error("No se pudo guardar el turno");
 
         return turnoResponseDto;
     }
 
     @Override
     public Optional<Turno> buscarPorId(Integer id) {
-        return turnoRepository.findById(id);
+        Optional<Turno> turno = turnoRepository.findById(id);
+        logger.info("turno encontrado: "+ id);
+        return turno;
     }
 
     @Override
@@ -76,6 +83,7 @@ public class TurnoService implements ITurnoService {
             //Con model mapper
             turnoRespuesta.add(convertirTUrnoEnResponse(t));
         }
+        logger.info("Turnos encontrados: "+ turnoRespuesta);
         return turnoRespuesta;
     }
 
@@ -91,17 +99,20 @@ public class TurnoService implements ITurnoService {
                     odontologo.get(),
                     LocalDate.parse(turnoModifyDto.getFecha())
                     );
-
+            logger.info("Turno modificado: "+ turno.getId());
             turnoRepository.save(turno);
         }
+        logger.error("El turno no se pudo modificar");
     }
 
     @Override
     public void eliminarTurno(Integer id) {
         Optional<Turno> turnoEncontrado = turnoRepository.findById(id);
         if (turnoEncontrado.isPresent()){
+            logger.info("Turno eliminado: "+ id);
             turnoRepository.deleteById(id);
         }else{
+            logger.error("Turno no encontrado");
             throw new ResourceNotFoundException("Turno no encontrado");
         }
         turnoRepository.deleteById(id);
@@ -109,7 +120,9 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public Optional<Turno> buscarPorApellidoPaciente(String pacienteApellido) {
-        return turnoRepository.buscarPorApellidoPaciente(pacienteApellido);
+        Optional<Turno> apellidoPaciente = turnoRepository.buscarPorApellidoPaciente(pacienteApellido);
+        logger.info("Paciente encontrado por apellido: "+ apellidoPaciente);
+        return apellidoPaciente;
     }
 
     private TurnoResponseDto obtenerTurnoResponse(Turno turnoDesdeBD){
