@@ -52,16 +52,18 @@ public class TurnoService implements ITurnoService {
             turno.setOdontologo(odontologo.get());
             turno.setFecha(LocalDate.parse(turnoRequestDto.getFecha()));
             //Get persist turno
-            logger.info("turno guardado: "+ turno.getId());
             turnoDesdeBD = turnoRepository.save(turno);
+            logger.info("turno guardado: "+ turnoDesdeBD.getId());
+
 
             //Build of turno response dto from turno got of DB
             //Armado a mano
             //turnoResponseDto = obtenerTurnoResponse(turnoDesdeBD);
             //Armado con Model mapper
             turnoResponseDto = convertirTUrnoEnResponse(turnoDesdeBD);
+        }else{
+            logger.error("No se pudo guardar el turno");
         }
-        logger.error("No se pudo guardar el turno");
 
         return turnoResponseDto;
     }
@@ -101,8 +103,10 @@ public class TurnoService implements ITurnoService {
                     );
             logger.info("Turno modificado: "+ turno.getId());
             turnoRepository.save(turno);
+        }else{
+            logger.error("El turno no se pudo modificar");
+
         }
-        logger.error("El turno no se pudo modificar");
     }
 
     @Override

@@ -3,8 +3,10 @@ package dh.backend.clinica.controller;
 import dh.backend.clinica.dto.request.TurnoModifyDto;
 import dh.backend.clinica.dto.request.TurnoRequestDto;
 import dh.backend.clinica.dto.response.TurnoResponseDto;
+import dh.backend.clinica.entity.Paciente;
 import dh.backend.clinica.entity.Turno;
 import dh.backend.clinica.service.ITurnoService;
+import dh.backend.clinica.service.impl.TurnoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,15 @@ public class TurnoController {
     @PostMapping("/guardar")
     public ResponseEntity<TurnoResponseDto> guardarTurno(@RequestBody TurnoRequestDto turnoRequestDto){
         return ResponseEntity.ok(turnoService.guardarTurno(turnoRequestDto));
+    }
+
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<Turno> buscarPorId(@PathVariable Integer id){
+        Optional<Turno> turnoEncontrado = turnoService.buscarPorId(id);
+        if (turnoEncontrado.isPresent()){
+            return ResponseEntity.ok(turnoEncontrado.get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/buscartodos")
